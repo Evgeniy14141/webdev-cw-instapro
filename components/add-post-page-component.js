@@ -1,23 +1,62 @@
+import { renderUploadImageComponent } from './upload-image-component.js';
+
+import { renderHeaderComponent } from './header-component.js';
+
 export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
+  let imageUrl = ''; // ------------
+  let description = ''; // ------------
   const render = () => {
     // TODO: Реализовать страницу добавления поста
     const appHtml = `
     <div class="page-container">
-      <div class="header-container"></div>
-      Cтраница добавления поста
-      <button class="button" id="add-button">Добавить</button>
-    </div>
+    <div class="header-container"></div>
+      <div class="form">
+          <h3 class="form-title">Добавить пост</h3>
+      <div class="form-inputs">
+          <div class="upload-image-container">
+          </div>
+              <label>Опишите фотографию:
+                  <textarea class="input textarea" rows="4" id="description"></textarea>
+              </label>
+                  <button class="button" id="add-button">Добавить</button>
+              </div>
+          </div>
+      </div>
+   </div>
   `;
 
     appEl.innerHTML = appHtml;
 
-    document.getElementById("add-button").addEventListener("click", () => {
+    renderHeaderComponent({
+      element: document.querySelector('.header-container'),
+    });
+
+    renderUploadImageComponent({
+      element: document.querySelector('.upload-image-container'),
+      onImageUrlChange(newImageUrl) {
+        imageUrl = newImageUrl;
+      },
+    });
+    const textArea = document.getElementById('description');
+
+    textArea.addEventListener('input', (e) => {
+      description = e.target.value;
+    });
+
+    document.getElementById('add-button').addEventListener('click', () => {
+      if (!imageUrl) {
+        alert('Добавьте фото');
+        return;
+      }
+      if (!description) {
+        alert('Добавьте описание');
+        return;
+      }
       onAddPostClick({
-        description: "Описание картинки",
-        imageUrl: "https://image.png",
+        description: description,
+        imageUrl: imageUrl,
       });
     });
   };
-
   render();
 }

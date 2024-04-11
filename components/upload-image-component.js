@@ -1,7 +1,7 @@
-import { uploadImage } from "../api.js";
+import { uploadImage } from '../api.js';
 
 export function renderUploadImageComponent({ element, onImageUrlChange }) {
-  let imageUrl = "";
+  let imageUrl = '';
 
   const render = () => {
     element.innerHTML = `
@@ -23,20 +23,20 @@ export function renderUploadImageComponent({ element, onImageUrlChange }) {
                 />
                 Выберите фото
             </label>
-          
+         
       `
       }
   </div>
 `;
 
-    const fileInputElement = element.querySelector(".file-upload-input");
+    const fileInputElement = element.querySelector('.file-upload-input');
 
-    fileInputElement?.addEventListener("change", () => {
+    fileInputElement?.addEventListener('change', () => {
       const file = fileInputElement.files[0];
       if (file) {
-        const lableEl = document.querySelector(".file-upload-label");
-        lableEl.setAttribute("disabled", true);
-        lableEl.textContent = "Загружаю файл...";
+        const lableEl = document.querySelector('.file-upload-label');
+        lableEl.setAttribute('disabled', true);
+        lableEl.textContent = 'Загружаю файл...';
         uploadImage({ file }).then(({ fileUrl }) => {
           imageUrl = fileUrl;
           onImageUrlChange(imageUrl);
@@ -46,13 +46,12 @@ export function renderUploadImageComponent({ element, onImageUrlChange }) {
     });
 
     element
-      .querySelector(".file-upload-remove-button")
-      ?.addEventListener("click", () => {
-        imageUrl = "";
+      .querySelector('.file-upload-remove-button')
+      ?.addEventListener('click', () => {
+        imageUrl = '';
         onImageUrlChange(imageUrl);
         render();
       });
   };
-
   render();
 }
