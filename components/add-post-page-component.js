@@ -38,7 +38,6 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
       },
     });
     const textArea = document.getElementById('description');
-
     textArea.addEventListener('input', (e) => {
       description = e.target.value;
     });

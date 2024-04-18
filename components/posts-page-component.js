@@ -9,7 +9,13 @@ import { setLike } from '../helpers.js';
 export function renderPostsPageComponent({ appEl }) {
   // TODO: реализовать рендер постов из api
   console.log('Актуальный список постов:', posts);
-
+    function sanitizeHtml(str) {
+        return str
+            .replace('&', '&amp;')
+            .replace('<', '&lt;')
+            .replace('>', '&gt;')
+            .replace('/', '&sol;')
+    }
   /**
    * TODO: чтобы отформатировать дату создания поста в виде "19 минут назад"
    * можно использовать https://date-fns.org/v2.29.3/docs/formatDistanceToNow
@@ -21,13 +27,20 @@ export function renderPostsPageComponent({ appEl }) {
                 <ul class="posts">
                  ${posts
                    .map((el) => {
+                       function sanitizeHtml(str) {
+                           return str
+                               .replace('&', '&amp;')
+                               .replace('<', '&lt;')
+                               .replace('>', '&gt;')
+                               .replace('/', '&sol;')
+                       }
                      return `
                   <li class="post">
                     <div class="post-header" data-user-id="${el.user.id}">
                         <img src="${
                           el.user.imageUrl
                         }" class="post-header__user-image">
-                        <p class="post-header__user-name">${el.user.name}</p>
+                        <p class="post-header__user-name">${sanitizeHtml(el.user.name)}</p>
                     </div>
                     <div class="post-image-container">
                       <img class="post-image" src="${el.imageUrl}">
@@ -45,8 +58,8 @@ export function renderPostsPageComponent({ appEl }) {
                       </p>
                     </div>
                     <p class="post-text">
-                      <span class="user-name">${el.user.name}</span>
-                      ${el.description}
+                      <span class="user-name">${sanitizeHtml(el.user.name)}</span>
+                      ${sanitizeHtml(el.description)}
                     </p>
                     <p class="post-date">
                       ${formatDistanceToNow(new Date(el.createdAt), {

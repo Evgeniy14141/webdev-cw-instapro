@@ -69,10 +69,10 @@ export function loginUser({ login, password }) {
         throw new Error('Неверный логин или пароль');
       }
       return response.json();
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+    }).catch((error) => {
+        console.error(error);
+      });
+
 }
 
 // Загружает картинку в облако, возвращает url загруженной картинки

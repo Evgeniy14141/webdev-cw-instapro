@@ -137,7 +137,7 @@ export function renderAuthPageComponent({ appEl, setUser }) {
           })
           .catch((error) => {
             console.warn(error);
-            setError('Некорректный логин или пароль');
+            setError(error.message);
           });
       }
     });
