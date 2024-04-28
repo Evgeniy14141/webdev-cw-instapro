@@ -6,6 +6,8 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
   let imageUrl = ''; // ------------
   let description = ''; // ------------
   const render = () => {
+
+
     // TODO: Реализовать страницу добавления поста
     const appHtml = `
     <div class="page-container">
@@ -39,6 +41,12 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
     });
     const textArea = document.getElementById('description');
 
+    textArea.oninput = () => {
+      if (textArea.value.charAt(0) === ' ') {
+        textArea.value = '';
+      }
+    }
+
     textArea.addEventListener('input', (e) => {
       description = e.target.value;
     });
@@ -53,10 +61,11 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
         return;
       }
       onAddPostClick({
-        description: description,
+        description: description.replaceAll('<', '&lt;').replaceAll('>', '&gt;'),
         imageUrl: imageUrl,
       });
     });
   };
   render();
 }
+

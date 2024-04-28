@@ -3,40 +3,37 @@ import { renderHeaderComponent } from './header-component.js';
 import { renderUploadImageComponent } from './upload-image-component.js';
 
 export function renderAuthPageComponent({ appEl, setUser }) {
+
   let isLoginMode = true;
   let imageUrl = '';
-
   const renderForm = () => {
     const appHtml = `
       <div class="page-container">
           <div class="header-container"></div>
           <div class="form">
               <h3 class="form-title">
-                ${
-                  isLoginMode
-                    ? 'Вход в&nbsp;Instapro'
-                    : 'Регистрация в&nbsp;Instapro'
-                }
+                ${isLoginMode
+        ? 'Вход в&nbsp;Instapro'
+        : 'Регистрация в&nbsp;Instapro'
+      }
                 </h3>
               <div class="form-inputs">
     
-                  ${
-                    !isLoginMode
-                      ? `
+                  ${!isLoginMode
+        ? `
                       <div class="upload-image-container"></div>
                       <input type="text" id="name-input" class="input" placeholder="Имя" />
                       `
-                      : ''
-                  }
+        : ''
+      }
                   
                   <input type="text" id="login-input" class="input" placeholder="Логин" />
                   <input type="password" id="password-input" class="input" placeholder="Пароль" />
                   
                   <div class="form-error"></div>
                   
-                  <button class="button" id="login-button">${
-                    isLoginMode ? 'Войти' : 'Зарегистрироваться'
-                  }</button>
+                  <button class="button" id="login-button">${isLoginMode ? 'Войти' : 'Зарегистрироваться'
+      }</button>
               </div>
             
               <div class="form-footer">
@@ -54,8 +51,7 @@ export function renderAuthPageComponent({ appEl, setUser }) {
 
     appEl.innerHTML = appHtml;
 
-    // Не вызываем перерендер, чтобы не сбрасывалась заполненная форма
-    // Точечно обновляем кусочек дом дерева
+    
     const setError = (message) => {
       appEl.querySelector('.form-error').textContent = message;
     };
@@ -93,24 +89,29 @@ export function renderAuthPageComponent({ appEl, setUser }) {
         }
 
         loginUser({
-          login: login,
-          password: password,
+          login: login.replaceAll('<', '&lt;').replaceAll('>', '&gt;'),
+          password: password.replaceAll('<', '&lt;').replaceAll('>', '&gt;'),
         })
           .then((user) => {
             setUser(user.user);
           })
           .catch((error) => {
             console.warn(error);
+            alert('Некорректный логин или пароль');
             setError('Некорректный логин или пароль');
+            
           });
       } else {
-        const login = document.getElementById('login-input').value;
+
         const name = document.getElementById('name-input').value;
+        const login = document.getElementById('login-input').value;
         const password = document.getElementById('password-input').value;
+
         if (!name) {
           alert('Введите имя');
-          return;
+          return
         }
+
         if (!login) {
           alert('Введите логин');
           return;
@@ -127,9 +128,9 @@ export function renderAuthPageComponent({ appEl, setUser }) {
         }
 
         registerUser({
-          login: login,
-          password: password,
-          name: name,
+          login: login.replaceAll('<', '&lt;').replaceAll('>', '&gt;'),
+          password: password.replaceAll('<', '&lt;').replaceAll('>', '&gt;'),
+          name: name.replaceAll('<', '&lt;').replaceAll('>', '&gt;'),
           imageUrl,
         })
           .then((user) => {
@@ -137,7 +138,8 @@ export function renderAuthPageComponent({ appEl, setUser }) {
           })
           .catch((error) => {
             console.warn(error);
-            setError('Некорректный логин или пароль');
+            setError(error.message);
+
           });
       }
     });

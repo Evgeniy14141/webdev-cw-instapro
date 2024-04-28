@@ -23,7 +23,7 @@ export function setLike({
   user,
 }) {
   if (!user) {
-    alert('Лайкать посты могут только авторизованные пользователи!');
+    alert('Чтобы поставить лайк, пожалуйста, авторизуйтесь!');
     return;
   }
   const isLiked = likeButton.dataset.isLiked === 'true' ? true : false;

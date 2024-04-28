@@ -128,7 +128,7 @@ export const renderApp = () => {
         fetch(postsHost, {
           method: 'POST',
           body: JSON.stringify({
-            description,
+            description: description.replaceAll('<', '&lt;').replaceAll('>', '&gt;'),
             imageUrl,
           }),
           headers: {
@@ -155,10 +155,12 @@ export const renderApp = () => {
   }
 
   if (page === USER_POSTS_PAGE) {
+
     // TODO: реализовать страницу фотографию пользвателя
     return renderUserPostsPageComponent({
       appEl,
     });
+
     // appEl.innerHTML = 'Здесь будет страница фотографий пользователя';
     // return;
   }
